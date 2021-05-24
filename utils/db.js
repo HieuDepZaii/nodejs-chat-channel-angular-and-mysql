@@ -10,7 +10,7 @@ class Db {
 			port: 3306,
 			user: 'root',
 			password: '1234',
-			database: 'nodejs_chat',
+			database: 'chat_channel',
 			debug: false
 		});
 	}

@@ -11,67 +11,67 @@ class Routes {
 	}
 
 	appRoutes() {
-		this.app.post('/usernameCheck', async (request, response) => {
-			const username = request.body.username;
-			if (username === "" || username === undefined || username === null) {
+		this.app.post('/emailCheck', async (request, response) => {
+			const email = request.body.email;
+			if (email === "" || email === undefined || email === null) {
 				response.status(412).json({
 					error: true,
-					message: `username cant be empty.`
+					message: `email cant be empty.`
 				});
 			} else {
-				const data = await helper.userNameCheck(username.toLowerCase());
+				const data = await helper.emailCheck(email.toLowerCase());
 				if (data[0]['count'] > 0) {
 					response.status(401).json({
 						error: true,
-						message: 'This username is alreday taken.'
+						message: 'This email is alreday taken.'
 					});
 				} else {
 					response.status(200).json({
 						error: false,
-						message: 'This username is available.'
+						message: 'This email is available.'
 					});
 				}
 			}
 		});
 
-		this.app.post('/registerUser', async (request, response) => {
-			const registrationResponse = {}
-			const data = {
-				username: (request.body.username).toLowerCase(),
-				password: request.body.password
-			};
-			if (data.username === '') {
-				registrationResponse.error = true;
-				registrationResponse.message = `username cant be empty.`;
-				response.status(412).json(registrationResponse);
-			} else if (data.password === '') {
-				registrationResponse.error = true;
-				registrationResponse.message = `password cant be empty.`;
-				response.status(412).json(registrationResponse);
-			} else {
-				const result = await helper.registerUser(data);
-				if (result === null) {
-					registrationResponse.error = true;
-					registrationResponse.message = `User registration unsuccessful,try after some time.`;
-					response.status(417).json(registrationResponse);
-				} else {
-					registrationResponse.error = false;
-					registrationResponse.userId = result.insertId;
-					registrationResponse.message = `User registration successful.`;
-					response.status(200).json(registrationResponse);
-				}
-			}
-		});
+		// this.app.post('/registerUser', async (request, response) => {
+		// 	const registrationResponse = {}
+		// 	const data = {
+		// 		username: (request.body.username).toLowerCase(),
+		// 		password: request.body.password
+		// 	};
+		// 	if (data.username === '') {
+		// 		registrationResponse.error = true;
+		// 		registrationResponse.message = `email cant be empty.`;
+		// 		response.status(412).json(registrationResponse);
+		// 	} else if (data.password === '') {
+		// 		registrationResponse.error = true;
+		// 		registrationResponse.message = `password cant be empty.`;
+		// 		response.status(412).json(registrationResponse);
+		// 	} else {
+		// 		const result = await helper.registerUser(data);
+		// 		if (result === null) {
+		// 			registrationResponse.error = true;
+		// 			registrationResponse.message = `User registration unsuccessful,try after some time.`;
+		// 			response.status(417).json(registrationResponse);
+		// 		} else {
+		// 			registrationResponse.error = false;
+		// 			registrationResponse.userId = result.insertId;
+		// 			registrationResponse.message = `User registration successful.`;
+		// 			response.status(200).json(registrationResponse);
+		// 		}
+		// 	}
+		// });
 
 		this.app.post('/login', async (request, response) => {
 			const loginResponse = {}
 			const data = {
-				username: (request.body.username).toLowerCase(),
+				email: (request.body.email).toLowerCase(),
 				password: request.body.password
 			};
-			if (data.username === '' || data.username === null) {
+			if (data.email === '' || data.email === null) {
 				loginResponse.error = true;
-				loginResponse.message = `username cant be empty.`;
+				loginResponse.message = `email cant be empty.`;
 				response.status(412).json(loginResponse);
 			} else if (data.password === '' || data.password === null) {
 				loginResponse.error = true;
@@ -81,7 +81,7 @@ class Routes {
 				const result = await helper.loginUser(data);
 				if (result === null || result.length === 0) {
 					loginResponse.error = true;
-					loginResponse.message = `Invalid username and password combination.`;
+					loginResponse.message = `Invalid email and password combination.`;
 					response.status(401).json(loginResponse);
 				} else {
 					loginResponse.error = false;
@@ -100,14 +100,14 @@ class Routes {
 				sessionCheckResponse.message = `User Id cant be empty.`;
 				response.status(412).json(sessionCheckResponse);
 			} else {
-				const username = await helper.userSessionCheck(userId);
-				if (username === null || username === '') {
+				const name = await helper.userSessionCheck(userId);
+				if (name === null || name === '') {
 					sessionCheckResponse.error = true;
 					sessionCheckResponse.message = `User is not logged in.`;
 					response.status(401).json(sessionCheckResponse);
 				} else {
 					sessionCheckResponse.error = false;
-					sessionCheckResponse.username = username;
+					sessionCheckResponse.name = name;
 					sessionCheckResponse.message = `User logged in.`;
 					response.status(200).json(sessionCheckResponse);
 				}
@@ -138,7 +138,7 @@ class Routes {
 
 		this.app.get('*', (request, response) => {
 			response.sendFile(path.join(__dirname + '../../client/views/index.html'));
-			
+
 		});
 	}
 

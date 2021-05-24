@@ -8,10 +8,10 @@
 app.controller('authController', function ($scope, $location, $timeout, appService) {
 
     $scope.data = {
-        regUsername : '',
+        regEmail : '',
         regPassword : '',
-        usernameAvailable : false,
-        loginUsername : '',
+        EmailAvailable : false,
+        loginEmail : '',
         loginPassword : ''
     };
 
@@ -19,32 +19,32 @@ app.controller('authController', function ($scope, $location, $timeout, appServi
     let TypeTimer;
     const TypingInterval = 800;
     /* usernamme check variables ends*/
-    
-    $scope.initiateCheckUserName = () => {
-        $scope.data.usernameAvailable = false;
+
+    $scope.initiateCheckEmail = () => {
+        $scope.data.EmailAvailable = false;
         $timeout.cancel(TypeTimer);
         TypeTimer = $timeout( () => {
             appService.httpCall({
-                url: '/usernameCheck',
+                url: '/emailCheck',
                 params: {
-                    'username': $scope.data.regUsername
+                    'email': $scope.data.regEmail
                 }
             })
             .then((response) => {
                 $scope.$apply( () =>{
-                    $scope.data.usernameAvailable = response.error ? true : false;
+                    $scope.data.emailAvailable = response.error ? true : false;
                 });
             })
             .catch((error) => {
                 $scope.$apply(() => {
-                    $scope.data.usernameAvailable = true;
+                    $scope.data.emailAvailable = true;
                 });
-               
+
             });
         }, TypingInterval);
     }
 
-    $scope.clearCheckUserName = () => {
+    $scope.clearCheckEmail = () => {
         $timeout.cancel(TypeTimer);
     }
 
@@ -52,7 +52,7 @@ app.controller('authController', function ($scope, $location, $timeout, appServi
         appService.httpCall({
             url: '/registerUser',
             params: {
-                'username': $scope.data.regUsername,
+                'email': $scope.data.regEmail,
                 'password': $scope.data.regPassword
             }
         })
@@ -68,8 +68,9 @@ app.controller('authController', function ($scope, $location, $timeout, appServi
     $scope.loginUser = () => {
         appService.httpCall({
             url: '/login',
+
             params: {
-                'username': $scope.data.loginUsername,
+                'email': $scope.data.loginEmail,
                 'password': $scope.data.loginPassword
             }
         })

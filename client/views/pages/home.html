@@ -1,10 +1,10 @@
 <div class="home-page">
     <!-- Home page header starts -->
     <div class="home-header">
-        <p class="welcome-user">Welcome {{ data.username }}</p>
+        <p class="welcome-user"><span style="font-size:20px">Welcome</span>  <span style="font-weight:bold">{{ data.name }}</span> </p>
         <span class="logout-user" ng-click="logout()">
             <i class="fa fa-power-off" aria-hidden="true"></i>
-        </span>        
+        </span>
     </div>
     <!-- Home page header ends -->
 
@@ -27,9 +27,9 @@
                         </ul>
                     </div>
                     <div class="message-text">
-                        <textarea id="message" 
-                            class="message form-control" 
-                            placeholder="Type and hit Enter" 
+                        <textarea id="message"
+                            class="message form-control"
+                            placeholder="Gõ và nhấn Enter"
                             ng-keydown="sendMessage($event)"
                         ></textarea>
                     </div>
@@ -47,12 +47,12 @@
                                 ng-repeat="friend in data.chatlist"
                                 ng-click="selectFriendToChat(friend.id)"
                                 ng-class="{'active':friend.id == data.selectedFriendId}"
-                            >{{friend.username}}</li>
+                            >{{friend.name}}</li>
                         </ul>
                         <div class="alert alert-info" ng-if="data.chatlist.length === 0">
                             <strong>No one is online to chat, ask someone to Login.</strong>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
             <!-- Chat List Markup ends -->
